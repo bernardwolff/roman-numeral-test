@@ -1,0 +1,54 @@
+<script>
+function romanize (num) {
+    if (!+num)
+        return false;
+    var digits = String(+num).split(""),
+        key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM",
+               "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC",
+               "","I","II","III","IV","V","VI","VII","VIII","IX"],
+        roman = "",
+        i = 3;
+    while (i--)
+        roman = (key[+digits.pop() + (i * 10)] || "") + roman;
+    return Array(+digits.join("") + 1).join("M") + roman;
+}
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+var num = 0;
+
+function play() {
+	num = getRandomInt(1,5000);
+	document.getElementById("answer").innerText = num;
+	document.getElementById("roman").innerText = romanize(num);
+	document.getElementById("cheat").style.display = "none";
+	document.getElementById("result").style.display = "none";
+	document.getElementById("entry").value = "";
+}
+
+function check() {
+	var entry = document.getElementById("entry").value;
+	var correct = parseInt(entry) == num 
+	document.getElementById("result").innerText = correct ? "correct" : "wrong";
+	document.getElementById("result").style.display = "block";
+	if (correct) showAnswer();
+}
+
+function showAnswer() {
+	document.getElementById("cheat").style.display = "block";
+}
+</script>
+
+<button onclick="play()">Play</button>
+
+<div id="roman"></div>
+
+<div id="cheat" style="display:none">Answer:<span id="answer"></span></div>
+<button onclick="showAnswer()" style="display:block">tell me the answer</button>
+<label>Enter the number:<input id="entry"></input></label>
+
+<button onclick="check()">Check</button>
+
+<div id="result"></div>
